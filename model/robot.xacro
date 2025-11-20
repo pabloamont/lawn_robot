@@ -4,7 +4,7 @@
 
 <!-- Including other files -->
 <xacro:include filename="ultrasounds.xacro" />
-<xacro:include filename="ros2_control.xacro"/>
+<!--xacro:include filename="ros2_control.xacro"/-->
 
 <!-- Body Dimensions -->
 <xacro:property name="body_link_x_dim" value="0.5"/>
@@ -37,7 +37,7 @@
 </xacro:macro>
 
 <!-- Extra Gazebo Options -->
-<!--xacro:include filename="$(find lawn_robot)/model/robot.gazebo" /-->
+<xacro:include filename="$(find lawn_robot)/model/robot.gazebo" />
 
 <!-- ########################################## -->
 <!--         Links and Joints Definition        -->
