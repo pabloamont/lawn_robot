@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+
+    <!-- Luz -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Suelo -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Necesarios para ROS2 y ros2_control -->
+    <plugin name="gazebo_ros_init" filename="libgazebo_ros_init.so"/>
+    <plugin name="gazebo_ros_factory" filename="libgazebo_ros_factory.so"/>
+
+  </world>
+</sdf>

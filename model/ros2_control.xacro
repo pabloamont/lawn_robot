@@ -1,46 +1,117 @@
 <?xml version="1.0"?>
 
-<robot>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+  <!-- ===================== -->
+  <!--  Datos del motor      -->
+  <!--  25GA370-12V-100RPM   -->
+  <!-- ===================== -->
+  <!-- Velocidad máxima en RPM -->
+  <xacro:property name="motor_rpm_max" value="100"/>
+  <!-- rad/s = RPM * 2*pi / 60 -->
+  <xacro:property name="motor_rad_s_max" value="${motor_rpm_max * 2.0 * 3.14159265 / 60.0}"/>
 
-<gazebo reference="body_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <material>
-        Gazebo/Grey
-    </material>
-</gazebo>
+  <!-- ===================== -->
+  <!--  ros2_control system  -->
+  <!-- ===================== -->
+  <ros2_control name="lawn_robot_control" type="system">
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
 
-<gazebo reference="wheel1_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <material>
-        Gazebo/DarkGrey
-    </material>
-</gazebo>
+    <!-- Rueda 1 -->
+    <joint name="wheel1_joint">
+      <command_interface name="velocity">
+        <param name="min">${-motor_rad_s_max}</param>
+        <param name="max">${motor_rad_s_max}</param>
+      </command_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
 
-<gazebo reference="wheel2_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <material>
-        Gazebo/DarkGrey
-    </material>
-</gazebo>
+    <!-- Rueda 2 -->
+    <joint name="wheel2_joint">
+      <command_interface name="velocity">
+        <param name="min">${-motor_rad_s_max}</param>
+        <param name="max">${motor_rad_s_max}</param>
+      </command_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
 
-<gazebo reference="wheel3_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <material>
-        Gazebo/DarkGrey
-    </material>
-</gazebo>
+    <!-- Rueda 3 -->
+    <joint name="wheel3_joint">
+      <command_interface name="velocity">
+        <param name="min">${-motor_rad_s_max}</param>
+        <param name="max">${motor_rad_s_max}</param>
+      </command_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
 
-<gazebo reference="wheel4_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <material>
-        Gazebo/DarkGrey
-    </material>
-</gazebo>
+    <!-- Rueda 4 -->
+    <joint name="wheel4_joint">
+      <command_interface name="velocity">
+        <param name="min">${-motor_rad_s_max}</param>
+        <param name="max">${motor_rad_s_max}</param>
+      </command_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
+  </ros2_control>
+
+  <!-- ===================== -->
+  <!--   Transmisiones       -->
+  <!-- ===================== -->
+  <transmission name="wheel1_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="wheel1_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="wheel1_joint">
+      <hardwareInterface>hardware_interface/velocity</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <transmission name="wheel2_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="wheel2_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="wheel2_joint">
+      <hardwareInterface>hardware_interface/velocity</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <transmission name="wheel3_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="wheel3_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="wheel3_joint">
+      <hardwareInterface>hardware_interface/velocity</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <transmission name="wheel4_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="wheel4_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="wheel4_joint">
+      <hardwareInterface>hardware_interface/velocity</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <!-- ===================== -->
+  <!--  Plugin Gazebo        -->
+  <!-- ===================== -->
+  <gazebo>
+    <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+      <robot_param>robot_description</robot_param>
+      <robot_param_node>robot_state_publisher</robot_param_node>
+      <parameters>$(find lawn_robot)/config/ros2_controller.yaml</parameters>
+    </plugin>
+  </gazebo>
 
 </robot>
